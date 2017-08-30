@@ -37,6 +37,9 @@ public:
     void readMag();
     void readGyro();
     void readAll();
+    void setMagGain(lsm303MagGain gain);
+    void setMagRate(lsm303MagRate rate);
+    void setAutoRange();
     accelData accel;
     magData mag;
     gyroData gyro;

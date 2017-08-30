@@ -30,7 +30,7 @@ ADAFRUIT_9DOF::~ADAFRUIT_9DOF() {
 };
 
 void ADAFRUIT_9DOF::readAccel() {
-    if(currSensor) {
+    if(currSensor != ACCELEROMETER) {
         sensor2->selectAccel();
     }
     int16_t accelRaw[3];
@@ -42,7 +42,7 @@ void ADAFRUIT_9DOF::readAccel() {
     currSensor = ACCELEROMETER;
 }
 void ADAFRUIT_9DOF::readMag() {
-    if(currSensor != 1) {
+    if(currSensor != MAGNETOMETER) {
         sensor2->selectMag();
     }
     int16_t magRaw[3];
@@ -54,7 +54,7 @@ void ADAFRUIT_9DOF::readMag() {
     currSensor = MAGNETOMETER;
 }
 void ADAFRUIT_9DOF::readGyro() {
-    if(currSensor) {
+    if(currSensor != GYROSCOPE) {
         sensor1->selectGyro();
     }
     int16_t gyroRaw[3];
@@ -69,4 +69,26 @@ void ADAFRUIT_9DOF::readAll() {
     readAccel();
     readMag();
     readGyro();
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// Functions to change sensor Parameters
+//////////////////////////////////////////////////////////////////////////////
+void ADAFRUIT_9DOF::setMagGain(lsm303MagGain gain) {
+    if(currSensor != MAGNETOMETER) {
+        sensor2->selectMag();
+    }
+    sensor2->setMagGain(gain);
+}
+
+void ADAFRUIT_9DOF::setMagRate(lsm303MagRate rate) {
+    if(currSensor != MAGNETOMETER) {
+        sensor2->selectMag();
+    }
+    sensor2->setMagRate(rate);
+}
+
+void ADAFRUIT_9DOF::setAutoRange() {
+    sensor1->gyroRange = !(sensor1->gyroRange);
+    sensor2->magRange = !(sensor2->magRange);
 }
