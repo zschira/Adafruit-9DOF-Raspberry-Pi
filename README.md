@@ -5,6 +5,7 @@ Adafruit 9dof C++ driver for Raspberry pi support. Contains individual drivers f
 
 ## Installation
 cd build
+
 make
 
 ## Usage
