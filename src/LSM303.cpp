@@ -1,6 +1,7 @@
 #include "LSM303.h"
 #include <stdlib.h>
 #include <linux/i2c-dev.h>
+#include <sys/ioctl.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <errno.h>

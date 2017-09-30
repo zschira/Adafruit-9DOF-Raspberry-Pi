@@ -20,7 +20,7 @@ int main() {
             heading += 360;
         printf("%f\n", heading);
         //Sleep for 0.25ms
-		usleep(250000);
+		//usleep(250000);
         counter++;
     }
 }

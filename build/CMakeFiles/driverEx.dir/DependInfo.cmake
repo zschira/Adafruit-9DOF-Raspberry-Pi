@@ -4,16 +4,16 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/ADAFRUIT_9DOF.cpp" "/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/build/CMakeFiles/driverEx.dir/src/ADAFRUIT_9DOF.cpp.o"
-  "/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/L3GD20.cpp" "/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/build/CMakeFiles/driverEx.dir/src/L3GD20.cpp.o"
-  "/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/LSM303.cpp" "/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/build/CMakeFiles/driverEx.dir/src/LSM303.cpp.o"
-  "/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/main.cpp" "/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/build/CMakeFiles/driverEx.dir/src/main.cpp.o"
+  "/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/ADAFRUIT_9DOF.cpp" "/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/build/CMakeFiles/driverEx.dir/src/ADAFRUIT_9DOF.cpp.o"
+  "/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/L3GD20.cpp" "/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/build/CMakeFiles/driverEx.dir/src/L3GD20.cpp.o"
+  "/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/LSM303.cpp" "/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/build/CMakeFiles/driverEx.dir/src/LSM303.cpp.o"
+  "/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/main.cpp" "/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/build/CMakeFiles/driverEx.dir/src/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "../src"
+  "../inc"
   )
 
 # Targets to which this target links.

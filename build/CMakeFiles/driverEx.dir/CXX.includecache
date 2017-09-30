@@ -6,9 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/ADAFRUIT_9DOF.cpp
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/ADAFRUIT_9DOF.cpp
 ADAFRUIT_9DOF.h
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/ADAFRUIT_9DOF.h
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/ADAFRUIT_9DOF.h
 stdlib.h
 -
 linux/i2c-dev.h
@@ -22,20 +22,22 @@ errno.h
 string.h
 -
 
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/ADAFRUIT_9DOF.h
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/ADAFRUIT_9DOF.h
 stdint.h
 -
 LSM303.h
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/LSM303.h
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/LSM303.h
 L3GD20.h
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/L3GD20.h
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/L3GD20.h
 
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/L3GD20.cpp
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/L3GD20.cpp
 L3GD20.h
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/L3GD20.h
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/L3GD20.h
 stdlib.h
 -
 linux/i2c-dev.h
+-
+sys/ioctl.h
 -
 fcntl.h
 -
@@ -46,16 +48,18 @@ errno.h
 string.h
 -
 
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/L3GD20.h
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/L3GD20.h
 stdint.h
 -
 
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/LSM303.cpp
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/LSM303.cpp
 LSM303.h
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/LSM303.h
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/LSM303.h
 stdlib.h
 -
 linux/i2c-dev.h
+-
+sys/ioctl.h
 -
 fcntl.h
 -
@@ -66,17 +70,17 @@ errno.h
 string.h
 -
 
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/LSM303.h
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/LSM303.h
 stdint.h
 -
 
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/main.cpp
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/main.cpp
 LSM303.h
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/LSM303.h
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/LSM303.h
 L3GD20.h
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/L3GD20.h
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/L3GD20.h
 ADAFRUIT_9DOF.h
-/home/pi/Desktop/Adafruit-9DOF-Raspberry-Pi/src/ADAFRUIT_9DOF.h
+/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/src/ADAFRUIT_9DOF.h
 unistd.h
 -
 linux/i2c-dev.h
