@@ -67,7 +67,7 @@ class L3GD20 {
 public:
     void initialize();
     void initUnified(int file_global);
-    void readGyro(int16_t *gyroRaw, float *gyro);
+    void readGyro(float *gyro);
     void selectGyro();
     gyroRange_t range;
     bool gyroRange;

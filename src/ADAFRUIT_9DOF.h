@@ -11,19 +11,7 @@ typedef enum {
     GYROSCOPE         =  2
 }sensorID_t;
 
-struct accelData {
-    float x;
-    float y;
-    float z;
-};
-
-struct magData {
-    float x;
-    float y;
-    float z;
-};
-
-struct gyroData {
+struct vec3D {
     float x;
     float y;
     float z;
@@ -40,9 +28,9 @@ public:
     void setMagGain(lsm303MagGain gain);
     void setMagRate(lsm303MagRate rate);
     void setAutoRange();
-    accelData accel;
-    magData mag;
-    gyroData gyro;
+    vec3D accel;
+    vec3D mag;
+    vec3D gyro;
 private:
     int file;
     L3GD20 *sensor1;

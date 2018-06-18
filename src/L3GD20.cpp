@@ -130,9 +130,9 @@ void L3GD20::writeReg(uint8_t reg, uint8_t value) {
 ///////////////////////////////////////////////////////////////////////////////
 // Public functions
 ///////////////////////////////////////////////////////////////////////////////
-void L3GD20::readGyro(int16_t *gyroRaw, float *gyro) {
-    uint8_t data[6], command = GYRO_REGISTER_OUT_X_L;
-    uint8_t bytes = 6;
+void L3GD20::readGyro(float *gyro) {
+    uint8_t data[6], command = GYRO_REGISTER_OUT_X_L, bytes = 6;
+    int16_t gyroRaw[3];
     int result = i2c_smbus_read_i2c_block_data(file, command, bytes, data);
     if (result != bytes) {
         printf("Failed to read gyro block from I2C.\n");

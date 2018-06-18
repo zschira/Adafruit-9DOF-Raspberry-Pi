@@ -1,1 +1,0 @@
-/home/zach/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-g++  --sysroot=/home/zach/rpi/rootfs     CMakeFiles/driverEx.dir/src/main.cpp.o CMakeFiles/driverEx.dir/src/LSM303.cpp.o CMakeFiles/driverEx.dir/src/ADAFRUIT_9DOF.cpp.o CMakeFiles/driverEx.dir/src/L3GD20.cpp.o  -o ../rpi_exe/driverEx -rdynamic 

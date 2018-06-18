@@ -1,3 +1,0 @@
-/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/build/CMakeFiles/edit_cache.dir
-/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/build/CMakeFiles/rebuild_cache.dir
-/home/zach/Documents/personal/Adafruit-9DOF-Raspberry-Pi/build/CMakeFiles/driverEx.dir

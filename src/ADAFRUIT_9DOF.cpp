@@ -57,9 +57,8 @@ void ADAFRUIT_9DOF::readGyro() {
     if(currSensor != GYROSCOPE) {
         sensor1->selectGyro();
     }
-    int16_t gyroRaw[3];
     float gyroActual[3];
-    sensor1->readGyro(gyroRaw, gyroActual);
+    sensor1->readGyro(gyroActual);
     gyro.x = gyroActual[0];
     gyro.y = gyroActual[1];
     gyro.z = gyroActual[2];
