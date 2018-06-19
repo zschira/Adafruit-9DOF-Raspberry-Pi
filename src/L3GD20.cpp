@@ -7,22 +7,7 @@
 #include <errno.h>
 #include <string.h>
 
-void L3GD20::initialize() {
-    char filename[20];
-	//Open the i2c bus
-	sprintf(filename, "/dev/i2c-%d", 1);
-
-	file = open(filename, O_RDWR);
-	if (file<0) {
-    	printf("Unable to open I2C bus!");
-        printf("%s\n", strerror(errno));
-        exit(1);
-	}
-    range = GYRO_RANGE_250DPS;
-    enableGyro();
-}
-
-void L3GD20::initUnified(int file_global) {
+void L3GD20::initL3GD20(int file_global) {
     file = file_global;
     range = GYRO_RANGE_250DPS;
     enableGyro();
@@ -90,18 +75,18 @@ void L3GD20::enableGyro() {
  /* ------------------------------------------------------------------ */
 
  /* Adjust resolution if requested */
- switch(range)
- {
-   case GYRO_RANGE_250DPS:
-     writeReg(GYRO_REGISTER_CTRL_REG4, 0x00);
-     break;
-   case GYRO_RANGE_500DPS:
-     writeReg(GYRO_REGISTER_CTRL_REG4, 0x10);
-     break;
-   case GYRO_RANGE_2000DPS:
-     writeReg(GYRO_REGISTER_CTRL_REG4, 0x20);
-     break;
- }
+	switch(range)
+	{
+		case GYRO_RANGE_250DPS:
+			writeReg(GYRO_REGISTER_CTRL_REG4, 0x00);
+			break;
+		case GYRO_RANGE_500DPS:
+			writeReg(GYRO_REGISTER_CTRL_REG4, 0x10);
+			break;
+		case GYRO_RANGE_2000DPS:
+			writeReg(GYRO_REGISTER_CTRL_REG4, 0x20);
+			break;
+	}
  /* Set CTRL_REG5 (0x24)
    ====================================================================
    BIT  Symbol    Description                                   Default
@@ -130,9 +115,10 @@ void L3GD20::writeReg(uint8_t reg, uint8_t value) {
 ///////////////////////////////////////////////////////////////////////////////
 // Public functions
 ///////////////////////////////////////////////////////////////////////////////
-void L3GD20::readGyro(float *gyro) {
+Vector3f L3GD20::readGyro() {
     uint8_t data[6], command = GYRO_REGISTER_OUT_X_L, bytes = 6;
     int16_t gyroRaw[3];
+    Vector3f gyro;
     int result = i2c_smbus_read_i2c_block_data(file, command, bytes, data);
     if (result != bytes) {
         printf("Failed to read gyro block from I2C.\n");
@@ -140,9 +126,9 @@ void L3GD20::readGyro(float *gyro) {
         exit(1);
     }
     // Convert to 16 bit raw int values
-    gyroRaw[0] = (int16_t)(data[0] | ((uint16_t)data[1] << 8));
-    gyroRaw[1] = (int16_t)(data[2] | ((uint16_t)data[3] << 8));
-    gyroRaw[2] = (int16_t)(data[4] | ((uint16_t)data[5] << 8));
+    gyroRaw[0] = (int16_t)(data[0] | (data[1] << 8));
+    gyroRaw[1] = (int16_t)(data[2] | (data[3] << 8));
+    gyroRaw[2] = (int16_t)(data[4] | (data[5] << 8));
 
     if(gyroRange) {
         // Check if the sensor is saturating or not
@@ -169,7 +155,6 @@ void L3GD20::readGyro(float *gyro) {
                     writeReg(GYRO_REGISTER_CTRL_REG5, 0x80);
                     break;
                 default:
-                    return;
                     break;
             }
         }
@@ -178,26 +163,27 @@ void L3GD20::readGyro(float *gyro) {
     /* Compensate values depending on the resolution */
     switch(range) {
         case GYRO_RANGE_250DPS:
-            gyro[0] = (float)gyroRaw[0] * GYRO_SENSITIVITY_250DPS;
-            gyro[1] = (float)gyroRaw[1] * GYRO_SENSITIVITY_250DPS;
-            gyro[2] = (float)gyroRaw[2] * GYRO_SENSITIVITY_250DPS;
+            gyro(0) = (float)gyroRaw[0] * GYRO_SENSITIVITY_250DPS;
+            gyro(1) = (float)gyroRaw[1] * GYRO_SENSITIVITY_250DPS;
+            gyro(2) = (float)gyroRaw[2] * GYRO_SENSITIVITY_250DPS;
             break;
         case GYRO_RANGE_500DPS:
-            gyro[0] = (float)gyroRaw[0] * GYRO_SENSITIVITY_500DPS;
-            gyro[1] = (float)gyroRaw[1] * GYRO_SENSITIVITY_500DPS;
-            gyro[2] = (float)gyroRaw[2] * GYRO_SENSITIVITY_500DPS;
+            gyro(0) = (float)gyroRaw[0] * GYRO_SENSITIVITY_500DPS;
+            gyro(1) = (float)gyroRaw[1] * GYRO_SENSITIVITY_500DPS;
+            gyro(2) = (float)gyroRaw[2] * GYRO_SENSITIVITY_500DPS;
             break;
         case GYRO_RANGE_2000DPS:
-            gyro[0] = (float)gyroRaw[0] * GYRO_SENSITIVITY_2000DPS;
-            gyro[1] = (float)gyroRaw[1] * GYRO_SENSITIVITY_2000DPS;
-            gyro[2] = (float)gyroRaw[2] * GYRO_SENSITIVITY_2000DPS;
+            gyro(0) = (float)gyroRaw[0] * GYRO_SENSITIVITY_2000DPS;
+            gyro(1) = (float)gyroRaw[1] * GYRO_SENSITIVITY_2000DPS;
+            gyro(2) = (float)gyroRaw[2] * GYRO_SENSITIVITY_2000DPS;
             break;
     }
 
     /* Convert values to rad/s */
-    gyro[0] *= SENSORS_DPS_TO_RADS;
-    gyro[1] *= SENSORS_DPS_TO_RADS;
-    gyro[2] *= SENSORS_DPS_TO_RADS;
+    gyro(0) *= SENSORS_DPS_TO_RADS;
+    gyro(1) *= SENSORS_DPS_TO_RADS;
+    gyro(2) *= SENSORS_DPS_TO_RADS;
+    return gyro;
 }
 
 void L3GD20::selectGyro() {

@@ -8,27 +8,12 @@
 #include <string.h>
 
 //Conversion constants
-static float _lsm303Accel_MG_LSB     = 0.000969F;   // 1, 2, 4 or 12 mg per lsb
+static float _lsm303Accel_MG_LSB     = 0.001F;   // 1, 2, 4 or 12 mg per lsb
 static float _lsm303Mag_Gauss_LSB_XY = 1100.0F;  // Varies with gain
 static float _lsm303Mag_Gauss_LSB_Z  = 980.0F;   // Varies with gain
 
-void LSM303::initialize() {
-    char filename[20];
-	//Open the i2c bus
-	sprintf(filename, "/dev/i2c-%d", 1);
 
-	file = open(filename, O_RDWR);
-	if (file<0) {
-    	printf("Unable to open I2C bus!");
-        printf("%s\n", strerror(errno));
-        exit(1);
-	}
-    magRange = false;
-    enableAccel();
-    enableMag();
-}
-
-void LSM303::initUnified(int file_global) {
+void LSM303::initLSM303(int file_global) {
     file = file_global;
     magRange = false;
     enableAccel();
@@ -61,11 +46,13 @@ void LSM303::selectAccel() {
 }
 
 //Public Functions
-void LSM303::readAccel(int16_t *accelRaw, float *accel) {
+Vector3f LSM303::readAccel() {
     if(!currSensor) {
         selectAccel();
     }
     uint8_t data[6], command = LSM303_REGISTER_ACCEL_OUT_X_L_A | 0x80;
+    int16_t accelRaw[3];
+    Vector3f accel;
     int bytes = 8;
     int result = i2c_smbus_read_i2c_block_data(file, command, bytes, data);
     if (result != bytes) {
@@ -78,9 +65,10 @@ void LSM303::readAccel(int16_t *accelRaw, float *accel) {
     accelRaw[1] = (int16_t)(data[2] | (data[3] << 8)) >> 4;
     accelRaw[2] = (int16_t)(data[4] | (data[5] << 8)) >> 4;
     // Convert to actual float values
-    accel[0] = (float)accelRaw[0] * _lsm303Accel_MG_LSB * SENSORS_GRAVITY_STANDARD;
-    accel[1] = (float)accelRaw[1] * _lsm303Accel_MG_LSB * SENSORS_GRAVITY_STANDARD;
-    accel[2] = (float)accelRaw[2] * _lsm303Accel_MG_LSB * SENSORS_GRAVITY_STANDARD;
+    accel(0) = (float)accelRaw[0] * _lsm303Accel_MG_LSB * SENSORS_GRAVITY_STANDARD;
+    accel(1) = (float)accelRaw[1] * _lsm303Accel_MG_LSB * SENSORS_GRAVITY_STANDARD;
+    accel(2) = (float)accelRaw[2] * _lsm303Accel_MG_LSB * SENSORS_GRAVITY_STANDARD;
+    return accel;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -91,13 +79,11 @@ void LSM303::readAccel(int16_t *accelRaw, float *accel) {
 void LSM303::enableMag() {
     //Select the magnetomoter
     printf("Selecting Magnetometer:\n");
-	if (ioctl(file, I2C_SLAVE, LSM303_ADDRESS_MAG) < 0) {
-        printf("Error: Could not select magnetometer\n");
-    }
-    printf("%s\n", strerror(errno));
-    // Set rate
+	selectMag();
+	// Set rate
     writeReg(LSM303_REGISTER_MAG_MR_REG_M, 0x00);
     setMagRate(LSM303_MAGRATE_75);
+    setMagGain(LSM303_MAGGAIN_1_3);
     currSensor = false;
 }
 
@@ -110,12 +96,13 @@ void LSM303::selectMag() {
 }
 
 //Public Functions
-void LSM303::readMag(int16_t *magRaw, float *mag) {
+Vector3f LSM303::readMag() {
     if(currSensor) {
         selectMag();
     }
-    uint8_t data[6], command = LSM303_REGISTER_MAG_OUT_X_H_M;
-    uint8_t bytes = 6;
+    uint8_t data[6], command = LSM303_REGISTER_MAG_OUT_X_H_M, bytes = 6;
+    int16_t magRaw[3];
+    Vector3f mag;
     int result = i2c_smbus_read_i2c_block_data(file, command, bytes, data);
     if (result != bytes) {
         printf("Failed to read mag block from I2C.\n");
@@ -123,9 +110,9 @@ void LSM303::readMag(int16_t *magRaw, float *mag) {
         exit(1);
     }
     // Convert to 16 bit raw int values
-    magRaw[0] = (int16_t)(data[0] | ((uint16_t)data[1] << 8));
-    magRaw[1] = (int16_t)(data[2] | ((uint16_t)data[3] << 8));
-    magRaw[2] = (int16_t)(data[4] | ((uint16_t)data[5] << 8));
+    magRaw[0] = (int16_t)(data[0] | (data[1] << 8));
+    magRaw[1] = (int16_t)(data[2] | (data[3] << 8));
+    magRaw[2] = (int16_t)(data[4] | (data[5] << 8));
 
     // Check for clipping and change gain if ranging enabled
     if(magRange) {
@@ -160,10 +147,10 @@ void LSM303::readMag(int16_t *magRaw, float *mag) {
         }
     }
     //Convert to floats
-    mag[0] = (float)magRaw[0] * _lsm303Mag_Gauss_LSB_XY * SENSORS_GAUSS_TO_MICROTESLA;
-    mag[1] = (float)magRaw[1] * _lsm303Mag_Gauss_LSB_XY * SENSORS_GAUSS_TO_MICROTESLA;
-    mag[2] = (float)magRaw[2] * _lsm303Mag_Gauss_LSB_XY * SENSORS_GAUSS_TO_MICROTESLA;
-    return;
+    mag(0) = (float)magRaw[0] * _lsm303Mag_Gauss_LSB_XY * SENSORS_GAUSS_TO_MICROTESLA;
+    mag(1) = (float)magRaw[1] * _lsm303Mag_Gauss_LSB_XY * SENSORS_GAUSS_TO_MICROTESLA;
+    mag(2) = (float)magRaw[2] * _lsm303Mag_Gauss_LSB_XY * SENSORS_GAUSS_TO_MICROTESLA;
+    return mag;
 }
 
 void LSM303::setMagGain(lsm303MagGain gain) {

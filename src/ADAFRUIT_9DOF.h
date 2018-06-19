@@ -2,8 +2,11 @@
 #define __ADAFRUIT_9DOF_H__
 
 #include <stdint.h>
+#include <Eigen/Dense>
 #include "LSM303.h"
 #include "L3GD20.h"
+
+using namespace Eigen;
 
 typedef enum {
     ACCELEROMETER     =  0,
@@ -11,30 +14,17 @@ typedef enum {
     GYROSCOPE         =  2
 }sensorID_t;
 
-struct vec3D {
-    float x;
-    float y;
-    float z;
-};
-
-class ADAFRUIT_9DOF {
+class ADAFRUIT_9DOF : public LSM303, public L3GD20 {
 public:
     ADAFRUIT_9DOF();
     ~ADAFRUIT_9DOF();
-    void readAccel();
-    void readMag();
-    void readGyro();
     void readAll();
-    void setMagGain(lsm303MagGain gain);
-    void setMagRate(lsm303MagRate rate);
     void setAutoRange();
-    vec3D accel;
-    vec3D mag;
-    vec3D gyro;
+    Vector3f accel;
+    Vector3f mag;
+    Vector3f gyro;
 private:
     int file;
-    L3GD20 *sensor1;
-    LSM303 *sensor2;
     sensorID_t currSensor;
 };
 
