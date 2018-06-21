@@ -1,9 +1,8 @@
 #ifndef __L3GD20_H__
 #define __L3GD20_H__
 #include <stdint.h>
-#include <Eigen/Dense>
 
-using namespace Eigen;
+
 //Conversion constants
 #define SENSORS_DPS_TO_RADS           (0.017453293F)
 
@@ -69,7 +68,7 @@ using namespace Eigen;
 class L3GD20 {
 public:
     void initL3GD20(int file_global);
-    Vector3f readGyro();
+    void readGyro(float *gyro);
     void selectGyro();
     bool gyroRange;
 private:

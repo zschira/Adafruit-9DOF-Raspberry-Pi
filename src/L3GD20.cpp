@@ -115,10 +115,9 @@ void L3GD20::writeReg(uint8_t reg, uint8_t value) {
 ///////////////////////////////////////////////////////////////////////////////
 // Public functions
 ///////////////////////////////////////////////////////////////////////////////
-Vector3f L3GD20::readGyro() {
+void L3GD20::readGyro(float *gyro) {
     uint8_t data[6], command = GYRO_REGISTER_OUT_X_L, bytes = 6;
     int16_t gyroRaw[3];
-    Vector3f gyro;
     int result = i2c_smbus_read_i2c_block_data(file, command, bytes, data);
     if (result != bytes) {
         printf("Failed to read gyro block from I2C.\n");
@@ -163,27 +162,26 @@ Vector3f L3GD20::readGyro() {
     /* Compensate values depending on the resolution */
     switch(range) {
         case GYRO_RANGE_250DPS:
-            gyro(0) = (float)gyroRaw[0] * GYRO_SENSITIVITY_250DPS;
-            gyro(1) = (float)gyroRaw[1] * GYRO_SENSITIVITY_250DPS;
-            gyro(2) = (float)gyroRaw[2] * GYRO_SENSITIVITY_250DPS;
+            gyro[0] = (float)gyroRaw[0] * GYRO_SENSITIVITY_250DPS;
+            gyro[1] = (float)gyroRaw[1] * GYRO_SENSITIVITY_250DPS;
+            gyro[2] = (float)gyroRaw[2] * GYRO_SENSITIVITY_250DPS;
             break;
         case GYRO_RANGE_500DPS:
-            gyro(0) = (float)gyroRaw[0] * GYRO_SENSITIVITY_500DPS;
-            gyro(1) = (float)gyroRaw[1] * GYRO_SENSITIVITY_500DPS;
-            gyro(2) = (float)gyroRaw[2] * GYRO_SENSITIVITY_500DPS;
+            gyro[0] = (float)gyroRaw[0] * GYRO_SENSITIVITY_500DPS;
+            gyro[1] = (float)gyroRaw[1] * GYRO_SENSITIVITY_500DPS;
+            gyro[2] = (float)gyroRaw[2] * GYRO_SENSITIVITY_500DPS;
             break;
         case GYRO_RANGE_2000DPS:
-            gyro(0) = (float)gyroRaw[0] * GYRO_SENSITIVITY_2000DPS;
-            gyro(1) = (float)gyroRaw[1] * GYRO_SENSITIVITY_2000DPS;
-            gyro(2) = (float)gyroRaw[2] * GYRO_SENSITIVITY_2000DPS;
+            gyro[0] = (float)gyroRaw[0] * GYRO_SENSITIVITY_2000DPS;
+            gyro[1] = (float)gyroRaw[1] * GYRO_SENSITIVITY_2000DPS;
+            gyro[2] = (float)gyroRaw[2] * GYRO_SENSITIVITY_2000DPS;
             break;
     }
 
     /* Convert values to rad/s */
-    gyro(0) *= SENSORS_DPS_TO_RADS;
-    gyro(1) *= SENSORS_DPS_TO_RADS;
-    gyro(2) *= SENSORS_DPS_TO_RADS;
-    return gyro;
+    gyro[0] *= SENSORS_DPS_TO_RADS;
+    gyro[1] *= SENSORS_DPS_TO_RADS;
+    gyro[2] *= SENSORS_DPS_TO_RADS;
 }
 
 void L3GD20::selectGyro() {

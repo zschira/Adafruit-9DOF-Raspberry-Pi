@@ -46,13 +46,12 @@ void LSM303::selectAccel() {
 }
 
 //Public Functions
-Vector3f LSM303::readAccel() {
+void LSM303::readAccel(float *accel) {
     if(!currSensor) {
         selectAccel();
     }
     uint8_t data[6], command = LSM303_REGISTER_ACCEL_OUT_X_L_A | 0x80;
     int16_t accelRaw[3];
-    Vector3f accel;
     int bytes = 8;
     int result = i2c_smbus_read_i2c_block_data(file, command, bytes, data);
     if (result != bytes) {
@@ -65,10 +64,9 @@ Vector3f LSM303::readAccel() {
     accelRaw[1] = (int16_t)(data[2] | (data[3] << 8)) >> 4;
     accelRaw[2] = (int16_t)(data[4] | (data[5] << 8)) >> 4;
     // Convert to actual float values
-    accel(0) = (float)accelRaw[0] * _lsm303Accel_MG_LSB * SENSORS_GRAVITY_STANDARD;
-    accel(1) = (float)accelRaw[1] * _lsm303Accel_MG_LSB * SENSORS_GRAVITY_STANDARD;
-    accel(2) = (float)accelRaw[2] * _lsm303Accel_MG_LSB * SENSORS_GRAVITY_STANDARD;
-    return accel;
+    accel[0] = (float)accelRaw[0] * _lsm303Accel_MG_LSB * SENSORS_GRAVITY_STANDARD;
+    accel[1] = (float)accelRaw[1] * _lsm303Accel_MG_LSB * SENSORS_GRAVITY_STANDARD;
+    accel[2] = (float)accelRaw[2] * _lsm303Accel_MG_LSB * SENSORS_GRAVITY_STANDARD;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -96,13 +94,12 @@ void LSM303::selectMag() {
 }
 
 //Public Functions
-Vector3f LSM303::readMag() {
+void LSM303::readMag(float *mag) {
     if(currSensor) {
         selectMag();
     }
     uint8_t data[6], command = LSM303_REGISTER_MAG_OUT_X_H_M, bytes = 6;
     int16_t magRaw[3];
-    Vector3f mag;
     int result = i2c_smbus_read_i2c_block_data(file, command, bytes, data);
     if (result != bytes) {
         printf("Failed to read mag block from I2C.\n");
@@ -147,10 +144,9 @@ Vector3f LSM303::readMag() {
         }
     }
     //Convert to floats
-    mag(0) = (float)magRaw[0] * _lsm303Mag_Gauss_LSB_XY * SENSORS_GAUSS_TO_MICROTESLA;
-    mag(1) = (float)magRaw[1] * _lsm303Mag_Gauss_LSB_XY * SENSORS_GAUSS_TO_MICROTESLA;
-    mag(2) = (float)magRaw[2] * _lsm303Mag_Gauss_LSB_XY * SENSORS_GAUSS_TO_MICROTESLA;
-    return mag;
+    mag[0] = (float)magRaw[0] * _lsm303Mag_Gauss_LSB_XY * SENSORS_GAUSS_TO_MICROTESLA;
+    mag[1] = (float)magRaw[1] * _lsm303Mag_Gauss_LSB_XY * SENSORS_GAUSS_TO_MICROTESLA;
+    mag[2] = (float)magRaw[2] * _lsm303Mag_Gauss_LSB_XY * SENSORS_GAUSS_TO_MICROTESLA;
 }
 
 void LSM303::setMagGain(lsm303MagGain gain) {

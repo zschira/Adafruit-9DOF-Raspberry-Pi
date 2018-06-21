@@ -1,9 +1,7 @@
 #ifndef __LSM303_H__
 #define __LSM303_H__
 #include <stdint.h>
-#include <Eigen/Dense>
 
-using namespace Eigen;
 //Conversion Constants
 #define SENSORS_GRAVITY_STANDARD           9.80665F
 #define SENSORS_GAUSS_TO_MICROTESLA        100
@@ -107,10 +105,10 @@ class LSM303 {
 public:
     void initLSM303(int file_global);
     //Accelerometer functions
-    Vector3f readAccel();
+    void readAccel(float *accel);
     void selectAccel();
     //Magnetometer Functions
-    Vector3f readMag();
+    void readMag(float *mag);
     void setMagGain(lsm303MagGain gain);
     void setMagRate(lsm303MagRate rate);
     void selectMag();

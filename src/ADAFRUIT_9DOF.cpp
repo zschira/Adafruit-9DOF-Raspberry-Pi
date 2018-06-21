@@ -1,6 +1,8 @@
 #include "ADAFRUIT_9DOF.h"
 #include <linux/i2c-dev.h>
 #include <fcntl.h>
+#include <unistd.h>
+#include <cstdlib>
 #include <cstdio>
 #include <cerrno>
 #include <cstring>
@@ -22,23 +24,23 @@ ADAFRUIT_9DOF::ADAFRUIT_9DOF() {
     currSensor = MAGNETOMETER;
 };
 
-ADAFRUIT_9DOF::~ADAFRUIT_9DOF() {close(file)};
+ADAFRUIT_9DOF::~ADAFRUIT_9DOF() {close(file);};
 
 void ADAFRUIT_9DOF::readAll() {
-    accel = readAccel();
-    mag = readMag();
-    gyro = readGyro();
+    readAccel(&accel.x);
+    readMag(&mag.x);
+    readGyro(&gyro.x);
 }
 
 void ADAFRUIT_9DOF::calcCoord() {
 	float cr, sr, cp, sp, magcx, magcy;
-	correction = Vector3f::Zero();
-	roll = atan2(accel(1), accel(2));
+	correction.x = correction.y = correction.z = 0;
+	roll = atan2(accel.y, accel.z);
 	cr = cos(roll); sr = sin(roll);
-	pitch = atan2(-accel(0), accel(1)*sr + accel(2)*cr);
+	pitch = atan2(-accel.x, accel.y*sr + accel.z*cr);
 	cp = cos(pitch); sp = sin(pitch);
-	magcy = (mag(2) - correction(2))*sr - (mag(1) - correction(1))*cr;
-	magcx = (mag(0) - correction(0))*cp + (mag(1) - correction(1))*sr*sp + (mag(2) - correction(2))*sp*cr;
+	magcy = (mag.z - correction.z)*sr - (mag.y - correction.y)*cr;
+	magcx = (mag.x - correction.x)*cp + (mag.y - correction.y)*sr*sp + (mag.z - correction.z)*sp*cr;
 	yaw = atan2(-magcy, magcx);
 }
 
