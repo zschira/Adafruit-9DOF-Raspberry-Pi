@@ -1,11 +1,10 @@
 #include "ADAFRUIT_9DOF.h"
-#include <stdlib.h>
 #include <linux/i2c-dev.h>
 #include <fcntl.h>
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
-#include <math.h>
+#include <cstdio>
+#include <cerrno>
+#include <cstring>
+#include <cmath>
 
 ADAFRUIT_9DOF::ADAFRUIT_9DOF() {
     char filename[20];
@@ -23,7 +22,7 @@ ADAFRUIT_9DOF::ADAFRUIT_9DOF() {
     currSensor = MAGNETOMETER;
 };
 
-ADAFRUIT_9DOF::~ADAFRUIT_9DOF() { };
+ADAFRUIT_9DOF::~ADAFRUIT_9DOF() {close(file)};
 
 void ADAFRUIT_9DOF::readAll() {
     accel = readAccel();
