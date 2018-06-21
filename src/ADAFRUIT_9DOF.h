@@ -19,10 +19,13 @@ public:
     ADAFRUIT_9DOF();
     ~ADAFRUIT_9DOF();
     void readAll();
+    void calcCoord();
     void setAutoRange();
     Vector3f accel;
     Vector3f mag;
     Vector3f gyro;
+    Vector3f correction;
+    float yaw, pitch, roll;
 private:
     int file;
     sensorID_t currSensor;

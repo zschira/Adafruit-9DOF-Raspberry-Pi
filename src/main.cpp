@@ -9,9 +9,10 @@ int main() {
     float heading;
     while(counter < 100) {
         imu.readAll();
-        cout << "GYRO: " << imu.gyro << endl;
-        cout << "ACCEl: " << imu.accel << endl;
-        cout << "MAG: " << imu.mag << endl;
+        imu.calcCoord();
+        cout << "Roll: " << imu.roll << endl;
+        cout << "Pitch: " << imu.pitch << endl;
+        cout << "Yaw: " << imu.yaw << endl;
         //Sleep for 0.25ms
 		//usleep(250000);
         counter++;

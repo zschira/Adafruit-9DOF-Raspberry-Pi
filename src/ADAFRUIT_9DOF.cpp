@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
+#include <math.h>
 
 ADAFRUIT_9DOF::ADAFRUIT_9DOF() {
     char filename[20];
@@ -28,6 +29,18 @@ void ADAFRUIT_9DOF::readAll() {
     accel = readAccel();
     mag = readMag();
     gyro = readGyro();
+}
+
+void ADAFRUIT_9DOF::calcCoord() {
+	float cr, sr, cp, sp, magcx, magcy;
+	correction = Vector3f::Zero();
+	roll = atan2(accel(1), accel(2));
+	cr = cos(roll); sr = sin(roll);
+	pitch = atan2(-accel(0), accel(1)*sr + accel(2)*cr);
+	cp = cos(pitch); sp = sin(pitch);
+	magcy = (mag(2) - correction(2))*sr - (mag(1) - correction(1))*cr;
+	magcx = (mag(0) - correction(0))*cp + (mag(1) - correction(1))*sr*sp + (mag(2) - correction(2))*sp*cr;
+	yaw = atan2(-magcy, magcx);
 }
 
 //////////////////////////////////////////////////////////////////////////////
