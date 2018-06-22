@@ -4,3 +4,5 @@ project(Adafruit-9DOF-Raspberry-Pi)
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 add_executable(imu src/main.cpp src/L3GD20.cpp src/LSM303.cpp src/ADAFRUIT_9DOF.cpp)
+target_compile_options(imu PUBLIC "$<$<CONFIG:DEBUG>:-ggdb>")
+target_compile_options(imu PUBLIC "$<$<CONFIG:RELEASE>:-O3>")
