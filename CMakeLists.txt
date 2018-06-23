@@ -18,7 +18,7 @@ if(RENDER)
 endif(RENDER)
 
 
-add_executable(imu src/main.cpp src/L3GD20.cpp src/LSM303.cpp src/ADAFRUIT_9DOF.cpp)
+add_executable(imu main.cpp)
 target_link_libraries(${TARGET} render)
 target_compile_options(imu PUBLIC "$<$<CONFIG:DEBUG>:-ggdb>")
 target_compile_options(imu PUBLIC "$<$<CONFIG:RELEASE>:-O3>")
