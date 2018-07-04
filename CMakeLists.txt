@@ -17,8 +17,12 @@ if(RENDER)
 	add_subdirectory(opengl)
 endif(RENDER)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
 add_executable(imu main.cpp)
-target_link_libraries(${TARGET} render)
+target_link_libraries(imu render)
 target_compile_options(imu PUBLIC "$<$<CONFIG:DEBUG>:-ggdb>")
 target_compile_options(imu PUBLIC "$<$<CONFIG:RELEASE>:-O3>")
+add_custom_command(TARGET imu POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       ${CMAKE_SOURCE_DIR}/resources $<TARGET_FILE_DIR:imu>)

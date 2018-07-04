@@ -33,8 +33,9 @@ include_directories(${FREETYPE_INCLUDE_DIRS})
 # use pkg-config --libs $(pkg-config --print-requires --print-requires-private glfw3) in a terminal to confirm
 set(LIBS glfw dl pthread assimp freetype)
 
-include_directories ("${PROJECT_SOURCE_DIR}/src")
-set(LIBS ${LIBS} src)
+include_directories ("../src")
+set(LIBS ${LIBS} ada)
+add_subdirectory(../src ${CMAKE_CURRENT_BINARY_DIR}/ada)
 
 
 # configure_file(configuration/root_directory.h.in configuration/root_directory.h)

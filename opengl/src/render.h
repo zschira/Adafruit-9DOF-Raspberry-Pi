@@ -2,7 +2,6 @@
 #define RENDER_H
 
 #include "glad/glad.h"
-#include "ADAFRUIT_9DOF.h"
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -23,7 +22,6 @@ private:
 	static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 	static void processInput(GLFWwindow *window);
-	ADAFRUIT_9DOF imu;
 };
 
 #endif
