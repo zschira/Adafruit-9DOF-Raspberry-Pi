@@ -119,9 +119,7 @@ int Render::run()
         imu.calcCoord(quaternion);
         glm::mat4 rotation;
         q = glm::quat(quaternion[0], quaternion[1], quaternion[2], quaternion[3]);
-        rotation = glm::rotate(rotation, imu.roll, glm::vec3(1.0, 0.0, 0.0));
-        rotation = glm::rotate(rotation, imu.pitch, glm::vec3(0.0, 1.0, 0.0));
-        rotation = glm::rotate(rotation, imu.yaw, glm::vec3(0.0, 0.0, 1.0));
+        rotation = glm::toMat4(q);
         cout << "Roll: " << imu.roll << endl;
         cout << "Pitch: " << imu.pitch << endl;
         cout << "Yaw: " << imu.yaw << endl;
