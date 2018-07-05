@@ -1,5 +1,5 @@
 #include "ADAFRUIT_9DOF.h"
-#include "MadwickAHRS.h"
+#include "MadgwickAHRS.h"
 #include <linux/i2c-dev.h>
 #include <fcntl.h>
 #include <unistd.h>
