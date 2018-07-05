@@ -23,7 +23,7 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 // quaternion
-volatile float quaternion[4] = {1.0f, 0.0f,  0.0f,  0.0f};  // quaternion of sensor frame relative to auxiliary frame
+float quaternion[4] = {1.0f, 0.0f,  0.0f,  0.0f};  // quaternion of sensor frame relative to auxiliary frame
 
 ADAFRUIT_9DOF imu;
 
