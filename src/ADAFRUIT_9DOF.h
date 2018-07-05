@@ -22,7 +22,7 @@ public:
     ADAFRUIT_9DOF();
     ~ADAFRUIT_9DOF();
     void readAll();
-    void calcCoord();
+    void calcCoord(float quaternion[4]);
     void setAutoRange();
     point3D accel;
     point3D mag;

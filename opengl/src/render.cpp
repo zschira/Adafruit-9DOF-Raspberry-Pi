@@ -22,6 +22,8 @@ bool firstMouse = true;
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
+// quaternion
+volatile float quaternion[4] = {1.0f, 0.0f,  0.0f,  0.0f};  // quaternion of sensor frame relative to auxiliary frame
 
 ADAFRUIT_9DOF imu;
 
@@ -114,8 +116,9 @@ int Render::run()
         ourShader.setMat4("view", view);
 
         // render the loaded model
-        imu.calcCoord();
+        imu.calcCoord(quaternion);
         glm::mat4 rotation;
+        q = glm::quat(quaternion[0], quaternion[1], quaternion[2], quaternion[3]);
         rotation = glm::rotate(rotation, imu.roll, glm::vec3(1.0, 0.0, 0.0));
         rotation = glm::rotate(rotation, imu.pitch, glm::vec3(0.0, 1.0, 0.0));
         rotation = glm::rotate(rotation, imu.yaw, glm::vec3(0.0, 0.0, 1.0));

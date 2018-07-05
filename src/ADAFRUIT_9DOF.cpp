@@ -1,4 +1,5 @@
 #include "ADAFRUIT_9DOF.h"
+#include "MadwickAHRS.h"
 #include <linux/i2c-dev.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -32,17 +33,8 @@ void ADAFRUIT_9DOF::readAll() {
     readGyro(&gyro.x);
 }
 
-void ADAFRUIT_9DOF::calcCoord() {
-	float cr, sr, cp, sp, magcx, magcy;
-	readAll();
-	correction.x = correction.y = correction.z = 0;
-	roll = atan2(accel.y, accel.z);
-	cr = cos(roll); sr = sin(roll);
-	pitch = atan2(-accel.x, accel.y*sr + accel.z*cr);
-	cp = cos(pitch); sp = sin(pitch);
-	magcy = (mag.z - correction.z)*sr - (mag.y - correction.y)*cr;
-	magcx = (mag.x - correction.x)*cp + (mag.y - correction.y)*sr*sp + (mag.z - correction.z)*sp*cr;
-	yaw = atan2(-magcy, magcx);
+void ADAFRUIT_9DOF::calcCoord(float quaternion[4]) {
+	MadgwickAHRSupdate(gyro.x, gyro.y, gyro.z,accel.x, accel.y, accel.z, mag.x, mag.y, mag,z, quaternion);
 }
 
 //////////////////////////////////////////////////////////////////////////////
