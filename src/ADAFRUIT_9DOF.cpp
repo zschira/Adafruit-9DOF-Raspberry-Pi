@@ -34,7 +34,7 @@ void ADAFRUIT_9DOF::readAll() {
 }
 
 void ADAFRUIT_9DOF::calcCoord(float quaternion[4]) {
-	MadgwickAHRSupdate(gyro.x, gyro.y, gyro.z,accel.x, accel.y, accel.z, mag.x, mag.y, mag,z, quaternion);
+	MadgwickAHRSupdate(gyro.x, gyro.y, gyro.z,accel.x, accel.y, accel.z, mag.x, mag.y, mag.z, quaternion);
 }
 
 //////////////////////////////////////////////////////////////////////////////
