@@ -34,7 +34,6 @@ void ADAFRUIT_9DOF::readAll() {
 
 void ADAFRUIT_9DOF::calcCoord() {
 	float cr, sr, cp, sp, magcx, magcy;
-	readAll();
 	correction.x = correction.y = correction.z = 0;
 	roll = atan2(accel.y, accel.z);
 	cr = cos(roll); sr = sin(roll);

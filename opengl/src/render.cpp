@@ -1,5 +1,5 @@
 #include "render.h"
-#include "ADAFRUIT_9DOF.h"
+
 #include <learnopengl/shader.h>
 #include <learnopengl/camera.h>
 #include <learnopengl/model.h>
@@ -22,8 +22,6 @@ bool firstMouse = true;
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-
-ADAFRUIT_9DOF imu;
 
 Render::Render() {
 
@@ -119,9 +117,6 @@ int Render::run()
         rotation = glm::rotate(rotation, imu.roll, glm::vec3(1.0, 0.0, 0.0));
         rotation = glm::rotate(rotation, imu.pitch, glm::vec3(0.0, 1.0, 0.0));
         rotation = glm::rotate(rotation, imu.yaw, glm::vec3(0.0, 0.0, 1.0));
-        cout << "Roll: " << imu.roll << endl;
-        cout << "Pitch: " << imu.pitch << endl;
-        cout << "Yaw: " << imu.yaw << endl;
         ourShader.setMat4("model", rotation);
         ourModel.Draw(ourShader);
 
@@ -140,6 +135,7 @@ int Render::run()
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();
+    *exit = true;
     return 0;
 }
 
