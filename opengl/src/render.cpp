@@ -36,13 +36,13 @@ int Render::run()
 {
     //Define euler strings
     std::string yaw, pitch, roll, x, y, z;
+    int counter = 0;
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
 
     // glfw window creation
     // --------------------
@@ -92,6 +92,9 @@ int Render::run()
     // -----------
     while (!glfwWindowShouldClose(window))
     {
+        imu.calcCoord(quaternion);
+        counter++;
+        if(counter % 10) continue;
         // per-frame time logic
         // --------------------
         float currentFrame = glfwGetTime();
@@ -116,7 +119,6 @@ int Render::run()
         ourShader.setMat4("view", view);
 
         // render the loaded model
-        imu.calcCoord(quaternion);
         glm::mat4 rotation;
         q = glm::quat(quaternion[0], quaternion[1], quaternion[2], quaternion[3]);
         rotation = glm::toMat4(q);
