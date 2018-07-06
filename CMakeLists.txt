@@ -2,8 +2,9 @@ cmake_minimum_required(VERSION 3.3.0)
 project(Adafruit-9DOF-Raspberry-Pi)
 
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+include_directories ("${PROJECT_SOURCE_DIR}/src")
+add_subdirectory("${PROJECT_SOURCE_DIR}/src")
 add_executable(imu main.cpp)
 target_link_libraries(imu ada)
 target_compile_options(imu PUBLIC "$<$<CONFIG:DEBUG>:-ggdb -std=c++11 -pthread>")

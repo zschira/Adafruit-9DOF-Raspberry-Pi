@@ -35,7 +35,6 @@ void ADAFRUIT_9DOF::readAll() {
     end = std::chrono::system_clock::now();
 	rate = 1000 / (std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
 	if(rate < 1.0) rate = 1.0;
-	printf("%f\n", rate);
 	start = end;
 }
 
