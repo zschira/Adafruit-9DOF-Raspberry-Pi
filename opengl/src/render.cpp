@@ -14,7 +14,7 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // camera
-Camera camera(glm::vec3(1.0f, 0.0f, 0.0f));
+Camera camera(glm::vec3(-2.0f, 0.0f, 0.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -119,9 +119,11 @@ int Render::run()
         ourShader.setMat4("view", view);
 
         // render the loaded model
-        glm::mat4 rotation;
+        glm::mat4 rotation, init_rot;
         q = glm::quat(quaternion[0], quaternion[1], quaternion[2], quaternion[3]);
-        rotation = glm::toMat4(q);
+        init_rot = glm::rotate(init_rot, glm::radians(90.0f), glm::vec3(0.0, 0.0, 0.0));
+        cout << q.w << "  " << q.x << "  " << q.y << "  " << q.z << "  " << endl;
+        rotation = init_rot * glm::toMat4(q);
         ourShader.setMat4("model", rotation);
         ourModel.Draw(ourShader);
 
