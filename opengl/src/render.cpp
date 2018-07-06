@@ -82,7 +82,7 @@ int Render::run()
 
     // load models
     // -----------
-    Model ourModel("models/target/target_test.obj");
+    Model ourModel("models/box/box.obj");
     
     // draw in wireframe
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
