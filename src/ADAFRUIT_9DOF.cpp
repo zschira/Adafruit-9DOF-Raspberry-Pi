@@ -1,4 +1,5 @@
 #include "ADAFRUIT_9DOF.h"
+#include "MadgwickAHRS.h"
 #include <linux/i2c-dev.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -22,6 +23,7 @@ ADAFRUIT_9DOF::ADAFRUIT_9DOF() {
 	initL3GD20(file);
 	initLSM303(file);
     currSensor = MAGNETOMETER;
+    start = std::chrono::system_clock::now();
 };
 
 ADAFRUIT_9DOF::~ADAFRUIT_9DOF() {close(file);};
@@ -30,18 +32,16 @@ void ADAFRUIT_9DOF::readAll() {
     readAccel(&accel.x);
     readMag(&mag.x);
     readGyro(&gyro.x);
+    end = std::chrono::system_clock::now();
+	rate = 1000 / (std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
+	if(rate < 1.0) rate = 1.0;
+	printf("%f\n", rate);
+	start = end;
 }
 
-void ADAFRUIT_9DOF::calcCoord() {
-	float cr, sr, cp, sp, magcx, magcy;
-	correction.x = correction.y = correction.z = 0;
-	roll = atan2(accel.y, accel.z);
-	cr = cos(roll); sr = sin(roll);
-	pitch = atan2(-accel.x, accel.y*sr + accel.z*cr);
-	cp = cos(pitch); sp = sin(pitch);
-	magcy = (mag.z - correction.z)*sr - (mag.y - correction.y)*cr;
-	magcx = (mag.x - correction.x)*cp + (mag.y - correction.y)*sr*sp + (mag.z - correction.z)*sp*cr;
-	yaw = atan2(-magcy, magcx);
+void ADAFRUIT_9DOF::calcCoord(float quaternion[4]) {
+	readAll();
+	MadgwickAHRSupdate(gyro.x, gyro.y, gyro.z,accel.x, accel.y, accel.z, mag.x, mag.y, mag.z, quaternion, rate);
 }
 
 //////////////////////////////////////////////////////////////////////////////

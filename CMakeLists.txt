@@ -2,8 +2,9 @@ cmake_minimum_required(VERSION 3.3.0)
 project(Adafruit-9DOF-Raspberry-Pi)
 
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-find_package (Eigen3 REQUIRED)
-include_directories(${Eigen3_INCLUDE_DIRS})
-include_directories(/usr/include/eigen3)
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
-add_executable(imu src/main.cpp src/L3GD20.cpp src/LSM303.cpp src/ADAFRUIT_9DOF.cpp)
+add_executable(imu main.cpp)
+target_link_libraries(imu ada)
+target_compile_options(imu PUBLIC "$<$<CONFIG:DEBUG>:-ggdb -std=c++11 -pthread>")
+target_compile_options(imu PUBLIC "$<$<CONFIG:RELEASE>:-O3 -std=c++11 -pthread>")
