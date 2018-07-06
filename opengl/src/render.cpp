@@ -120,9 +120,6 @@ int Render::run()
         glm::mat4 rotation;
         q = glm::quat(quaternion[0], quaternion[1], quaternion[2], quaternion[3]);
         rotation = glm::toMat4(q);
-        cout << "Roll: " << imu.roll << endl;
-        cout << "Pitch: " << imu.pitch << endl;
-        cout << "Yaw: " << imu.yaw << endl;
         ourShader.setMat4("model", rotation);
         ourModel.Draw(ourShader);
 

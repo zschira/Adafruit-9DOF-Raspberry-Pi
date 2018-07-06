@@ -2,6 +2,7 @@
 #define __ADAFRUIT_9DOF_H__
 
 #include <stdint.h>
+#include <chrono>
 #include "LSM303.h"
 #include "L3GD20.h"
 
@@ -27,8 +28,9 @@ public:
     point3D accel;
     point3D mag;
     point3D gyro;
-    point3D correction;
-    float yaw, pitch, roll;
+    std::chrono::time_point<std::chrono::system_clock> start;
+    std::chrono::time_point<std::chrono::system_clock> end;
+    float rate;
 private:
     int file;
     sensorID_t currSensor;

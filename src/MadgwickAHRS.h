@@ -22,7 +22,7 @@ extern volatile float beta;				// algorithm gain
 //---------------------------------------------------------------------------------------------------
 // Function declarations
 
-void MadgwickAHRSupdate(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz, float quaternion[4]);
+void MadgwickAHRSupdate(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz, float quaternion[4], float sampleFreq);
 
 #ifdef __cplusplus
 }
