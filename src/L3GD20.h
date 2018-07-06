@@ -2,6 +2,7 @@
 #define __L3GD20_H__
 #include <stdint.h>
 
+
 //Conversion constants
 #define SENSORS_DPS_TO_RADS           (0.017453293F)
 
