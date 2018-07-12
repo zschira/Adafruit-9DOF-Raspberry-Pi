@@ -13,10 +13,10 @@ int startServer();
 int main() {
     float quaternion[4] = {1.0, 0.0, 0.0, 0.0};
     ADAFRUIT_9DOF imu;
+    int socketID = startServer();
     imu.setAutoRange();
-    socketID = startServer();
     for(int i=0; i < 1000; i++) {
-        imu.calcCoord();
+        imu.calcCoord(quaternion);
         send(socketID, quaternion, 4*sizeof(float), 0);
     }
     if(!shutdown(socketID, 2)) {
