@@ -11,7 +11,7 @@ int connectServer();
 int main() {
     float quaternion[4];
     int socketID = connectServer();
-    while(recv(socketID , quaternion, 4*sizeof(float), 0) >= 0) {
+    while(recv(socketID , quaternion, 4*sizeof(float), 0) > 0) {
         printf("%f %f %f %f\n", quaternion[0], quaternion[1], quaternion[2], quaternion[3]);
     }
     return 0;
