@@ -19,7 +19,7 @@ int main() {
         imu.calcCoord(quaternion);
         send(socketID, quaternion, 4*sizeof(float), 0);
     }
-    if(!shutdown(socketID, 2)) {
+    if(shutdown(socketID, 2) < 0) {
         perror("socket shutdown failed");
         exit(EXIT_FAILURE);  
     }
