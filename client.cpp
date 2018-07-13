@@ -4,17 +4,30 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include <thread>
+#include <mutex>
 #define PORT 8080
   
 int connectServer();
+void getState();
+std::mutex mtx;
 
 int main() {
     float quaternion[4];
-    int socketID = connectServer();
-    while(recv(socketID , quaternion, 4*sizeof(float), 0) > 0) {
-        printf("%f %f %f %f\n", quaternion[0], quaternion[1], quaternion[2], quaternion[3]);
-    }
+    int bytesRead = 1, socketID = connectServer();
+    std::thread update(getState, NULL);
+    std::thread render(renderBox, NULL);   
+    update.join();
+    render.join();
     return 0;
+}
+
+void getState() {
+    while(bytesRead > 0) {
+        mtx.lock();
+        bytesRead = recv(socketID , quaternion, 4*sizeof(float), 0);
+        mtx.unlock();
+    }
 }
 
 int connectServer() {
