@@ -28,9 +28,7 @@ void LSM303::initLSM303(int file_global) {
 void LSM303::enableAccel() {
     //Select the accelerometer
     printf("Selecting accelerometer:\n");
-	if (ioctl(file, I2C_SLAVE, LSM303_ADDRESS_ACCEL) < 0) {
-        printf("Error: Could not select accelerometer\n");
-    }
+	selectAccel();
     printf("%s\n", strerror(errno));
     // Set update rate to 100Hz
     writeReg(LSM303_REGISTER_ACCEL_CTRL_REG1_A, 0x57);
@@ -78,6 +76,7 @@ void LSM303::enableMag() {
     //Select the magnetomoter
     printf("Selecting Magnetometer:\n");
 	selectMag();
+    printf("%s\n", strerror(errno));
 	// Set rate
     writeReg(LSM303_REGISTER_MAG_MR_REG_M, 0x00);
     setMagRate(LSM303_MAGRATE_75);
